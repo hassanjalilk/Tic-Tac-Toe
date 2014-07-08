@@ -1,75 +1,98 @@
 <!DOCTYPE HTML>
-
 <html>
-	<head>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <style> 
 
-	<style>
+      .column {
+        vertical-align: top;
+        display: inline-block;
+      }
 
-		.column {
-			vertical-align: top;
-			display: inline-block;
-		}
+      .column div {
+        width : 150px;
+        height : 150px;
+        border : 1px solid black;
+        text-align: center;
+      }
 
-		.column div {
-			width : 150px;
-			height : 150px;
-			border : 1px solid black;
-			text-align: center
-		}
-
-	</style>
-
-
+      
+    </style>
   </head>
   <body>
-  	<div class = "column">
-  		<div id = "2"></div>
-  		<div id = "2"></div>
-  		<div id = "3"></div>
-  	</div>
-  	<div class = "column">
-  		<div id = "4"></div>
-  		<div id = "5"></div>
-  		<div id = "6"></div>
-  	</div>
-  	<div class = "column">
-  		<div id = "7"></div>
-  		<div id = "8"></div>
-  		<div id = "9"></div>
-  	</div>
+    <div class = "container">
+      <div class = "column">
+        <div id="1"></div>
+        <div id="2"></div>
+        <div id="3"></div>
+      </div>
+      <div class = "column">
+        <div id="4"></div>
+        <div id="5"></div>
+        <div id="6"></div>
+      </div>
+      <div class = "column">
+        <div id="7"></div>
+        <div id="8"></div>
+        <div id="9"></div>
+      </div>
+    </div>
+
+      <script>
+
+          var turn = 1;
+          var turnX = []
+          var turnO = []
+          var winningCombinations = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
+          
+
+          $('.column div').click(function() {
+            if (turn % 2 == 0) {
+              $(this).text("X");
+              var valueOfXId = parseInt($(this).attr('id'));
+              turnX.push(valueOfXId);
+            } 
+            else {
+              $(this).text("O");
+              var valueOfOId = parseInt($(this).attr('id'));
+              turnO.push(valueOfOId);
+            }
+            $(this).off("click");
+            turn++;
+            if (winner()) {
+              alert(winner());
+              if (confirm('Do you want to start again?')) {
+                restartGame();
+              }
+            }
+          });
+
+          var winner = function() {
+            for (var i = 0; i < winningCombinations.length; i++) {
+              combo = winningCombinations[i];
+              if (turnX.indexOf(combo[0]) !== -1 &&
+                  turnX.indexOf(combo[1]) !== -1 &&
+                  turnX.indexOf(combo[2]) !== -1) {
+                return 'X wins';
+              } else if (turnO.indexOf(combo[0]) !== -1 &&
+                         turnO.indexOf(combo[1]) !== -1 &&
+                         turnO.indexOf(combo[2]) !== -1) {
+                return 'O wins';
+              }
+            }
+            if (turnX.length + turnO.length === 9) {
+              return 'draw'
+            }
+          }
 
 
-  		<script>
-	  	var turn = 1;
-	  	var turnX = []
-	  	var turnO = []
-	  	var winningCombinations = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
+          // var list = ['a', 'b', 'c', 'd'];
+          // list.indexOf('f') // => -1
+          // list[3] // => 'd'
 
-	  	$('.column div').click(function() {
-	  		if (turn % 2 == 0) {
-	  			$(this).text("X")
-	  			var ValueOfXId = parseInt($(this).attr('id'))
-	  			turnX.push(ValueOfXId);
-	  		}
-	  		else {
-	  			$(this).text("O")
-	  			var ValueOfOId = parseInt($(this).attr('id'))
-	  			turnO.push(ValueOfOId);
-	  		}
-	  		$(this).off(click);
-	  		turn++;
-	  		if (winner()) {
-	  			alert(winner());
-	  			if (confirm('Do you want to play again?')) {
-	  				restartGame();
-	  			}
-	  		}
-	  	});
-
-	  
-
-   </script>
+          
+    
+      </script>
 
 
   </body>
